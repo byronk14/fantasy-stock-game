@@ -1,25 +1,20 @@
-const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/user/user');
 
 const express = require('express');
 
 const app = express();
 
 app.use(express.static('public'));
+app.use(express.json());
 
-app.use(express.static('./', {
-    setHeaders: (res, path) => {
-      if (path.endsWith('.js')) {
-        res.set('Content-Type', 'application/javascript');
-      }
-    }
-  }));
+app.use('/', userRoutes);
 
-app.use('/users', userRoutes);
 
-app.get('/', (req, res) => {
+app.get('/client.js', (req, res) => {
+  res.set('Content-Type', 'application/javascript');
+  res.sendFile(__dirname + '/client.js');
+});
 
-  });
-
-  app.listen(3000, () => {
-    console.log('Server started on port 3000');
-  });
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
