@@ -1,6 +1,9 @@
 const button = document.getElementById('api-button');
 
-button.addEventListener('click', () => {
+button.addEventListener('click', addUser);
+
+// Functions
+function addUser () {
   const username = document.getElementById('username').value;
   const email = document.getElementById('email').value;
 
@@ -16,8 +19,12 @@ button.addEventListener('click', () => {
   })
     .then(response => {
       if (response.redirected) {
-        window.location.href = response.url
+        const url = new URL(response.url);
+        url.searchParams.set('username', username);
+        window.location.href = url.toString();
       }
     })
     .catch(error => console.error('Error:', error));
-});
+};
+
+

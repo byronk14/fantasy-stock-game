@@ -6,18 +6,14 @@ const db = createPool();
 
 var path = require('path');
 
-router.post('/userProfile', postUserProfile);
-
 async function postUserProfile(req, res) {
     
   const { username, email } = req.body;
 
   const results = await db.query(`INSERT INTO user_info (username, email) VALUES (?, ?)`, [username, email])
   .then((results) => {
-    console.log(results);
 
-    res.redirect('/home'); 
-  
+    res.redirect('/home');  
   })
   .catch((err) => {
     console.error(err);
@@ -25,8 +21,34 @@ async function postUserProfile(req, res) {
   });
 }
 
-router.get('/home', (req, res) => {
+async function getHome(req, res){
   res.sendFile(path.resolve('public/home.html'));
-});
+}
 
-module.exports = router;
+async function getTeam(req, res){
+  const { username } = req.query;
+
+  const results = await db.query(`SELECT
+                                  pld.stock_symbol,
+                                  pld.stock_name
+                                  FROM user_info ui 
+                                  JOIN portfolio_info pi2 on ui.id = pi2.user_id 
+                                  JOIN portfolio_lineup_details pld on pi2.portfolio_id = pld.portfolio_id  
+                                  WHERE ui.username = ?`, [username]);
+
+  const portfolio_name = await db.query(`SELECT 
+                                      portfolio_name
+                                      FROM portfolio_info pi
+                                      JOIN user_info ui on pi.user_id = ui.id 
+                                      WHERE ui.username = ?`, [username]);
+
+  console.log([results, portfolio_name]);
+  res.json([results, portfolio_name])
+}
+
+module.exports = {
+  router: router,
+  postUserProfile: postUserProfile,
+  getHome: getHome,
+  getTeam: getTeam
+};

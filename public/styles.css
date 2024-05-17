@@ -29,3 +29,10 @@ body {
   #api-button {
     margin-top: 20px;
   }
+
+  #portfolio-name {
+    background-color: #746dd8; /* optional */
+    padding: 1rem;
+    text-align: center;
+    width: 100%;
+  }
