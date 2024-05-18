@@ -1,29 +1,31 @@
-const user = require('./routes/user/user');
-
 const express = require('express');
+const user = require('./routes/user/user');
+const path = require('path');
 
 const app = express();
 
+// Middleware
 app.use(express.static('public'));
 app.use(express.json());
 
+// Routes
 app.post('/userProfile', user.postUserProfile);
-
 app.get('/home', user.getHome);
+app.get('/getTeam', user.getTeam);
 
-app.get('/getTeam', user.getTeam)
-
-
+// Static file serving
 app.get('/client.js', (req, res) => {
-  res.set('Content-Type', 'application/javascript');
-  res.sendFile(__dirname + '/client.js');
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'client.js'));
 });
 
 app.get('/home.js', (req, res) => {
-  res.set('Content-Type', 'application/javascript');
-  res.sendFile(__dirname + '/home.js');
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'home.js'));
 });
 
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+// Start the server
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });

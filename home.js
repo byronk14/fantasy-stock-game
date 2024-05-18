@@ -13,29 +13,27 @@ function getTeam() {
     })
       .then(response => response.json())
       .then(data => {
-        const tableContainer = document.getElementById('table-container');
-        const existingTable = tableContainer.querySelector('table');
+        const tableBody = document.getElementById('lineup-body');
+        const portfolioName = document.querySelectorAll('.portfolio-name');
 
-        const portfolioTitle = document.getElementById('portfolio-name');
-        portfolioTitle.textContent = data[1][0][0].portfolio_name;
+        portfolioName.forEach(portfolioName => {
+            portfolioName.textContent = data[1][0][0].portfolio_name;
+        })
 
-        if (!existingTable) {
-            const table = document.createElement('table');
-            table.setAttribute('style', 'border: 1px solid black; border-collapse: collapse;');
+        tableBody.innerHTML = '';
 
-            data[0][0].forEach(row => {
-                const tableRow = document.createElement('tr');
-                Object.values(row).forEach(cell => {
-                const tableCell = document.createElement('td');
-                tableCell.textContent = cell;
-                tableCell.setAttribute('style', 'border: 1px solid black; padding: 5px;');
-                tableRow.appendChild(tableCell);
-                });
-                table.appendChild(tableRow);
-            });
+        data[0][0].forEach(player => {
+            const row = document.createElement('tr');
 
-            tableContainer.appendChild(table);
-        }
+            row.innerHTML = `
+                <td>Stock</td>
+                <td>${player.stock_symbol}</td>
+                <td>${player.stock_name}</td>
+            `;
+            tableBody.appendChild(row);
       })
-      .catch(error => console.error('Error:', error));
-  };
+    })
+      .catch(error => {
+        console.error('Error:', error);
+  })
+};

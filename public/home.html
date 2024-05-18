@@ -1,15 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>User Home</title>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <h1>Home</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantasy Portfolio</title>
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
   <button id="get-team-button">Get My Team</button>
-  <h1 id="portfolio-name"></h1>
-  <div class="container" id="table-container"></div>
   <script src="home.js"></script>
-  
+<div class="header">
+    <span class="menu-icon">&#9776;</span>
+    <span class="portfolio-name"></span>
+    <span class="chat-icon">&#9993;</span>
+</div>
+
+<div class="container">
+    <div class="team-header">
+        <span class="portfolio-name"></span>
+        <div>0-0 • #1 Fantasy league!</div>
+    </div>
+    
+    <div class="buttons">
+        <button>Edit Lineup</button>
+        <button>Matchup</button>
+    </div>
+
+    <table class="lineup">
+        <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Ticker</th>
+                <th>Company Name</th>
+            </tr>
+        </thead>
+        <tbody id="lineup-body">
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
+
+
