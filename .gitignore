@@ -132,5 +132,8 @@ dist
 .DS_Store
 
 /stock-data-load-dagster/stock_data_load_dagster/.env
-stock-data-load-dagster/stock_data_load_dagster.egg-info
-stock-data-load-dagster/stock_data_load_dagster/__pycache__
+/stock-data-load-dagster/stock_data_load_dagster.egg-info
+/stock-data-load-dagster/stock_data_load_dagster/__pycache__/
+/stock-data-load-dagster/stock_data_load_dagster/resources/__pycache__/
+/stock-data-load-dagster/stock_data_load_dagster/tmpbfvq8c09/
+stock-data-load-dagster/tmpbfvq8c09/
