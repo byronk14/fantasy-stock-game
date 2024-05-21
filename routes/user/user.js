@@ -42,7 +42,7 @@ async function getTeam(req, res){
                                       JOIN user_info ui on pi.user_id = ui.id 
                                       WHERE ui.username = ?`, [username]);
 
-  console.log([results, portfolio_name]);
+  //console.log([results, portfolio_name]);
   res.json([results, portfolio_name])
 }
 

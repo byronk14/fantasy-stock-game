@@ -130,3 +130,7 @@ dist
 .pnp.*
 
 .DS_Store
+
+/stock-data-load-dagster/stock_data_load_dagster/.env
+stock-data-load-dagster/stock_data_load_dagster.egg-info
+stock-data-load-dagster/stock_data_load_dagster/__pycache__

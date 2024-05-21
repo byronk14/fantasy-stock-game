@@ -1,6 +1,8 @@
 const get_team_button = document.getElementById('get-team-button');
+const edit_portfolio_button = document.getElementById('get-stock-pool');
 
 get_team_button.addEventListener('click', getTeam);
+edit_portfolio_button.addEventListener('click', editPortfolio);
 
 function getTeam() {
     const username = new URLSearchParams(window.location.search).get('username');
@@ -37,3 +39,12 @@ function getTeam() {
         console.error('Error:', error);
   })
 };
+
+function editPortfolio() {
+  fetch(`/getStockPool`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+}

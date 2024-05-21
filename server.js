@@ -1,5 +1,6 @@
 const express = require('express');
 const user = require('./routes/user/user');
+const editPortfolio = require('./routes/portfolio/editPortfolio');
 const path = require('path');
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.post('/userProfile', user.postUserProfile);
 app.get('/home', user.getHome);
 app.get('/getTeam', user.getTeam);
+app.get('/getStockPool', editPortfolio.getStockPool);
 
 // Static file serving
 app.get('/client.js', (req, res) => {

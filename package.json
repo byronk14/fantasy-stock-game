@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^3.0.1",
     "express": "^4.19.2",
     "mysql2": "^3.9.7",
     "nodemon": "^3.1.0"
