@@ -41,7 +41,9 @@ function getTeam() {
 };
 
 function editPortfolio() {
-  fetch(`/getStockPool`, {
+  const username = new URLSearchParams(window.location.search).get('username');
+
+  fetch(`/getStockPool?username=${username}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
