@@ -2,7 +2,7 @@ from dagster import asset, AssetIn, MetadataValue, MaterializeResult
 import alpaca
 import mysql.connector
 from alpaca.data.historical import StockHistoricalDataClient
-from alpaca.data.requests import StockLatestQuoteRequest
+from alpaca.data.requests import StockLatestBarRequest
 from dotenv import load_dotenv
 import os
 
@@ -54,9 +54,9 @@ def latest_stock_data(context, valid_ticker_data):
 
     client = StockHistoricalDataClient(os.getenv('APCA_API_KEY_ID'), os.getenv('APCA_API_SECRET_KEY'))
     
-    multisymbol_request_params = StockLatestQuoteRequest(symbol_or_symbols=TICKER_LIST)
+    multisymbol_request_params = StockLatestBarRequest(symbol_or_symbols=TICKER_LIST)
 
-    latest_multisymbol_quotes = client.get_stock_latest_quote(multisymbol_request_params)
+    latest_multisymbol_quotes = client.get_stock_latest_bar(multisymbol_request_params)
 
     context.log.info(latest_multisymbol_quotes)
 
@@ -74,30 +74,28 @@ def latest_stock_data(context, valid_ticker_data):
     for _, values in latest_multisymbol_quotes.items():
         data_insert.append([
             values.symbol,
-            values.ask_exchange,
-            values.ask_price,
-            values.ask_size,
-            values.bid_exchange,
-            values.bid_price,
-            values.bid_size,
-            ','.join(values.conditions), 
-            values.tape,
+            values.close,
+            values.high,
+            values.low,
+            values.open,
+            values.trade_count,
+            values.volume,
+            values.vwap,
             values.timestamp
         ])
 
     query = """
             INSERT INTO latest_stock_quotes (
                 symbol, 
-                ask_exchange, 
-                ask_price, 
-                ask_size, 
-                bid_exchange, 
-                bid_price, 
-                bid_size, 
-                conditions, 
-                tape, 
-                timestamp
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                stock_close,
+                stock_high,
+                stock_low,
+                stock_open,
+                stock_trade_count,
+                stock_volume,
+                stock_vwap,
+                stock_timestamp
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
 
     cursor.executemany(query, (data_insert))

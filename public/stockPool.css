@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+td.action-cell {
+  text-align: center;
+}
+
+button.action-button {
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #1c78e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+button.action-button:hover {
+  background-color: #45a049;
+}

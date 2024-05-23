@@ -28,9 +28,15 @@ function getTeam() {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>Stock</td>
-                <td>${player.stock_symbol}</td>
-                <td>${player.stock_name}</td>
+              <td>${player.stock_symbol}</td>
+              <td>${player.stock_close}</td>
+              <td>${player.stock_high}</td>
+              <td>${player.stock_low}</td>
+              <td>${player.stock_open}</td>
+              <td>${player.stock_trade_count}</td>
+              <td>${player.stock_volume}</td>
+              <td>${player.stock_vwap}</td>
+              <td>${new Date(player.stock_timestamp).toLocaleString()}</td>
             `;
             tableBody.appendChild(row);
       })
@@ -43,10 +49,10 @@ function getTeam() {
 function editPortfolio() {
   const username = new URLSearchParams(window.location.search).get('username');
 
-  fetch(`/getStockPool?username=${username}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+  if (username) {
+    window.location.href = `/stockPool?username=${username}`;
+  }
+  else {
+    console.error('Username not found in URL parameters');
+  }
 }

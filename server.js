@@ -13,7 +13,9 @@ app.use(express.json());
 app.post('/userProfile', user.postUserProfile);
 app.get('/home', user.getHome);
 app.get('/getTeam', user.getTeam);
+app.get('/stockPool', editPortfolio.stockPool);
 app.get('/getStockPool', editPortfolio.getStockPool);
+app.post('/addStock', editPortfolio.addStock);
 
 // Static file serving
 app.get('/client.js', (req, res) => {
@@ -24,6 +26,11 @@ app.get('/client.js', (req, res) => {
 app.get('/home.js', (req, res) => {
   res.type('application/javascript');
   res.sendFile(path.join(__dirname, 'home.js'));
+});
+
+app.get('/stockPool.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'stockPool.js'));
 });
 
 // Start the server

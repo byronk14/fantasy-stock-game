@@ -30,7 +30,14 @@ async function getTeam(req, res){
 
   const results = await db.query(`SELECT
                                   pld.stock_symbol,
-                                  pld.stock_name
+                                  pld.stock_close,
+                                  pld.stock_high,
+                                  pld.stock_low,
+                                  pld.stock_open,
+                                  pld.stock_timestamp,
+                                  pld.stock_trade_count,
+                                  pld.stock_volume,
+                                  pld.stock_vwap
                                   FROM user_info ui 
                                   JOIN portfolio_info pi2 on ui.id = pi2.user_id 
                                   JOIN portfolio_lineup_details pld on pi2.portfolio_id = pld.portfolio_id  
