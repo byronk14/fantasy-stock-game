@@ -31,3 +31,8 @@ button.action-button {
 button.action-button:hover {
   background-color: #45a049;
 }
+
+.action-button[disabled] {
+  background-color: gray;
+  cursor: not-allowed;
+}

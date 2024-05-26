@@ -31,7 +31,16 @@ async function stockPool(req, res) {
 
 async function getStockPool(req, res) {
   try {
-    const results = await db.query('SELECT * FROM latest_stock_quotes');
+    const results = await db.query(`SELECT 
+                                      *
+                                    FROM 
+                                      latest_stock_quotes
+                                    WHERE stock_timestamp = (
+                                        SELECT 
+                                          MAX(stock_timestamp)
+                                        FROM 
+                                          latest_stock_quotes
+                                    )`);
     const cleanedResults = cleanData(results);
     res.json(cleanedResults);
   } catch (error) {
@@ -72,10 +81,37 @@ async function addStock(req, res) {
       res.status(500).json({ success: false, message: 'Database error' });
       }
 }
+
+async function getCurrentPortfolio(req, res) {
+  const { username } = req.query;
+
+   query = `SELECT
+              pld.stock_symbol
+            FROM 
+              user_info ui 
+            JOIN 
+              portfolio_info pi2 on ui.id = pi2.user_id 
+            JOIN  
+              portfolio_lineup_details pld on pi2.portfolio_id = pld.portfolio_id  
+            WHERE 
+              ui.username = ?`;
+  
+  try {
+    const results = await db.query(query, [username]);
+    const cleanedResults = cleanData(results);
+    res.json(cleanedResults);
+    } 
+  catch (error) {
+    console.error('Error executing query', error.stack);
+    res.status(500).json({ success: false, message: 'Database error' });
+    }
+}
+
   
 
 module.exports = {
   stockPool: stockPool,
   getStockPool: getStockPool,
-  addStock: addStock
+  addStock: addStock,
+  getCurrentPortfolio: getCurrentPortfolio
 }

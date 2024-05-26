@@ -16,6 +16,7 @@ app.get('/getTeam', user.getTeam);
 app.get('/stockPool', editPortfolio.stockPool);
 app.get('/getStockPool', editPortfolio.getStockPool);
 app.post('/addStock', editPortfolio.addStock);
+app.get('/getCurrentPortfolio', editPortfolio.getCurrentPortfolio)
 
 // Static file serving
 app.get('/client.js', (req, res) => {
