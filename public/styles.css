@@ -1,38 +1,48 @@
 body {
-    margin: 0;
-  }
-  
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0 auto;
-  }
-  
-  .input-row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  .input-row label {
-    margin-right: 10px;
-  }
-  
-  .input-row input {
-    margin-right: 20px;
-  }
-  
-  #api-button {
-    margin-top: 20px;
-  }
+  margin: 0;
+}
 
-  #portfolio-name {
-    background-color: #746dd8; /* optional */
-    padding: 1rem;
-    text-align: center;
-    width: 100%;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+.input-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%; /* Ensure full width */
+  text-align: center; /* Center align text */
+}
+
+.input-row label {
+  margin-right: 10px;
+}
+
+.input-row input {
+  margin-right: 20px;
+}
+
+#api-button {
+  margin-top: 20px;
+}
+
+#portfolio-name {
+  background-color: #746dd8; /* optional */
+  padding: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+.message {
+  margin-top: 10px;
+  font-size: 16px;
+  color: red;
+  width: 100%;
+  text-align: center; /* Center align message text */
+}

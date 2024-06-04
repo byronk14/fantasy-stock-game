@@ -11,8 +11,8 @@ app.use(express.json());
 
 // Routes
 app.post('/userProfile', user.postUserProfile);
-app.get('/home', user.getHome);
-app.get('/getTeam', user.getTeam);
+app.get('/home', user.home);
+app.get('/getHome', user.getHome);
 app.get('/stockPool', editPortfolio.stockPool);
 app.get('/getStockPool', editPortfolio.getStockPool);
 app.post('/addStock', editPortfolio.addStock);
