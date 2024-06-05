@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
 }
 .header {
-    background-color: #4CAF50;
+    background-color: #5CE1E6;
     color: white;
     padding: 10px 0;
     text-align: center;
@@ -65,7 +65,7 @@ body {
     margin-bottom: 20px;
 }
 .buttons button {
-    background-color: #4CAF50;
+    background-color: #5CE1E6;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -73,5 +73,5 @@ body {
     margin: 0 10px;
 }
 .buttons button:hover {
-    background-color: #45a049;
-}
+    background-color: #5CE1E6;
+}s
