@@ -1,44 +1,61 @@
 const button = document.getElementById('api-button');
 
-button.addEventListener('click', addUser);
+button.addEventListener('click', loginEvent);
 
 // Functions
-function addUser() {
+async function loginEvent() {
   const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const messageDiv = document.getElementById('message');
 
-  fetch('/userProfile', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          username,
-          email
-      })
-  })
-  .then(response => response.json().then(data => ({status: response.status, body: data}))) // Get both status and body
-  .then(({status, body}) => {
-      const messageDiv = document.getElementById('message');
-      if (status === 409) {
-          // Account already exists
-          messageDiv.textContent = body.message;
-      } else if (status === 200) {
-          // Redirect on successful creation
-          if (body.redirected) {
-              const url = new URL(body.url);
+  try {
+      // Attempt to create a new user
+      const createUserResponse = await fetch('/userProfile', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+      });
+
+      const createUserData = await createUserResponse.json();
+
+      if (createUserResponse.status === 409) {
+          // User already exists, attempt to log in
+          const loginResponse = await fetch('/login', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ username, password })
+          });
+
+          const loginData = await loginResponse.json();
+
+          if (loginResponse.status === 200) {
+              // Successful login, redirect to home page
+              if (loginData.redirected) {
+                  const url = new URL(loginData.url, window.location.origin);
+                  url.searchParams.set('username', username);
+                  window.location.href = url.toString();
+              }
+          } else {
+              // Incorrect password
+              messageDiv.textContent = loginData.message;
+          }
+      } else if (createUserResponse.status === 200) {
+          // Successful account creation, redirect to home page
+          if (createUserData.redirected) {
+            const url = new URL(loginData.url, window.location.origin);
               url.searchParams.set('username', username);
               window.location.href = url.toString();
           }
       } else {
           // Handle other errors
-          messageDiv.textContent = body.message;
+          messageDiv.textContent = createUserData.message;
       }
-  })
-  .catch(error => {
+  } catch (error) {
       console.error('Error:', error);
-  });
+      messageDiv.textContent = 'An unexpected error occurred.';
+  }
 }
-
-
-

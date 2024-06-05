@@ -3,25 +3,44 @@ const { createPool } = require('../../database/database');
 
 const router = express.Router();
 const db = createPool();
-
 var path = require('path');
 
+async function login(req, res){
+  try {
+  const { username, password } = req.body;
+
+  const userpasswordquery = `SELECT password FROM user_INFO WHERE username = ?`;
+  const returnpassword = await db.query(userpasswordquery, [username]);
+
+  if (returnpassword[0][0].password === password) {
+    res.status(200).json({ redirected: true, url: '/home' });
+  }
+
+  else {
+    res.status(400).json({ message: 'Incorrect credentials. Access denied.'});
+  }
+  }
+  catch (error) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+} 
+
+
 async function postUserProfile(req, res) {
-    
-  const { username, email } = req.body;
+  const { username, password } = req.body;
 
   try {
     // Check if the user already exists
-    const userCheckQuery = `SELECT * FROM user_info WHERE username = ? OR email = ?`;
-    const existingUser = await db.query(userCheckQuery, [username, email]);
+    const userCheckQuery = `SELECT * FROM user_info WHERE username = ? OR password = ?`;
+    const existingUser = await db.query(userCheckQuery, [username, password]);
 
     if (existingUser.length > 0) {
       // User with the same username or email already exists
       res.status(409).json({ message: 'Account already exists' });
     } else {
       // Insert new user
-      const insertUserQuery = `INSERT INTO user_info (username, email) VALUES (?, ?)`;
-      await db.query(insertUserQuery, [username, email]);
+      const insertUserQuery = `INSERT INTO user_info (username, password) VALUES (?, ?)`;
+      await db.query(insertUserQuery, [username, password]);
       res.redirect('/home');
     }
   } catch (err) {
@@ -79,5 +98,6 @@ module.exports = {
   router: router,
   postUserProfile: postUserProfile,
   home: home,
-  getHome: getHome
+  getHome: getHome,
+  login: login
 };
