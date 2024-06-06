@@ -1,6 +1,7 @@
 const express = require('express');
 const user = require('./routes/user/user');
 const editPortfolio = require('./routes/portfolio/editPortfolio');
+const team = require('./routes/team/team');
 const path = require('path');
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 // Routes
 app.post('/userProfile', user.postUserProfile);
 app.post('/login', user.login);
+app.get('/team', team.team);
 app.get('/home', user.home);
 app.get('/getHome', user.getHome);
 app.get('/stockPool', editPortfolio.stockPool);
@@ -33,6 +35,11 @@ app.get('/home.js', (req, res) => {
 app.get('/stockPool.js', (req, res) => {
   res.type('application/javascript');
   res.sendFile(path.join(__dirname, 'stockPool.js'));
+});
+
+app.get('/team.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'team.js'));
 });
 
 // Start the server

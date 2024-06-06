@@ -13,7 +13,7 @@ async function login(req, res){
   const returnpassword = await db.query(userpasswordquery, [username]);
 
   if (returnpassword[0][0].password === password) {
-    res.status(200).json({ redirected: true, url: '/home' });
+    res.status(200).json({ redirected: true, url: '/team' });
   }
 
   else {
@@ -41,7 +41,7 @@ async function postUserProfile(req, res) {
       // Insert new user
       const insertUserQuery = `INSERT INTO user_info (username, password) VALUES (?, ?)`;
       await db.query(insertUserQuery, [username, password]);
-      res.redirect('/home');
+      res.redirect('/team');
     }
   } catch (err) {
     console.error(err);
