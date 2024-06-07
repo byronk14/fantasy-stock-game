@@ -16,6 +16,25 @@ async function team(req, res){
     })
   }
 
-  module.exports = {
-    team: team
-  };
+async function createLeague(req, res){
+    const { leagueName, username } = req.body;
+
+    query = `INSERT INTO portfolio_info (user_id, portfolio_name)
+            SELECT  ui.id, ?
+            FROM user_info ui
+            WHERE ui.username = ?;`
+
+    try {
+        const results = await db.query(query, [leagueName, username]);
+        res.json({ success: true, message: 'League created successfully' });
+        } 
+    catch (error) {
+        console.error('Error executing query', error.stack);
+        res.status(500).json({ success: false, message: 'Database error' });
+        }
+}
+
+module.exports = {
+    team: team,
+    createLeague: createLeague 
+  }
