@@ -35,9 +35,9 @@ async function getStockPool(req, res) {
                                       *
                                     FROM 
                                       latest_stock_quotes
-                                    WHERE stock_timestamp = (
+                                    WHERE DATE(stock_timestamp) = (
                                         SELECT 
-                                          MAX(stock_timestamp)
+                                          MAX(DATE(stock_timestamp))
                                         FROM 
                                           latest_stock_quotes
                                     )`);
@@ -50,13 +50,14 @@ async function getStockPool(req, res) {
 };
 
 async function addStock(req, res) {
-    const { stock_symbol, stock_close, stock_high, stock_low, stock_open, stock_timestamp, stock_trade_count, stock_volume, stock_vwap, username } = req.body;
+    const { stock_symbol, stock_close, stock_high, stock_low, stock_open, stock_timestamp, stock_trade_count, stock_volume, stock_vwap, username, portfolio_name } = req.body;
 
     query = `INSERT INTO portfolio_lineup_details (portfolio_id, stock_symbol, stock_close, stock_high, stock_low, stock_open, stock_timestamp, stock_trade_count, stock_volume, stock_vwap)
     SELECT p.portfolio_id, ?, ?, ?, ?, ?, ?, ?, ?, ?
     FROM user_info u
     JOIN portfolio_info p ON u.id = p.user_id
-    WHERE u.username = ?;
+    WHERE u.username = ?
+    AND p.portfolio_name = ?;
      `
 
     const values = [
@@ -69,7 +70,8 @@ async function addStock(req, res) {
       stock_trade_count,
       stock_volume,
       stock_vwap,
-      username
+      username,
+      portfolio_name
     ];
 
   try {
@@ -83,7 +85,7 @@ async function addStock(req, res) {
 }
 
 async function getCurrentPortfolio(req, res) {
-  const { username } = req.query;
+  const { username, portfolio_name } = req.query;
 
    query = `SELECT
               pld.stock_symbol
@@ -94,10 +96,12 @@ async function getCurrentPortfolio(req, res) {
             JOIN  
               portfolio_lineup_details pld on pi2.portfolio_id = pld.portfolio_id  
             WHERE 
-              ui.username = ?`;
+              ui.username = ?
+            AND
+              pi2.portfolio_name = ?`;
   
   try {
-    const results = await db.query(query, [username]);
+    const results = await db.query(query, [username, portfolio_name]);
     const cleanedResults = cleanData(results);
     res.json(cleanedResults);
     } 

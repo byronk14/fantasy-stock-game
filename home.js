@@ -50,9 +50,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function editPortfolio() {
   const username = new URLSearchParams(window.location.search).get('username');
+  const portfolio_name = new URLSearchParams(window.location.search).get('portfolio_name');
 
   if (username) {
-    window.location.href = `/stockPool?username=${username}`;
+    window.location.href = `/stockPool?username=${username}&portfolio_name=${portfolio_name}`;
   }
   else {
     console.error('Username not found in URL parameters');

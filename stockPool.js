@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
   const username = new URLSearchParams(window.location.search).get('username');
+  const portfolio_name = new URLSearchParams(window.location.search).get('portfolio_name');
 
       try {
         // Fetch the stock pool
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const stockData = await stockResponse.json();
 
         // Fetch the portfolio data
-        const portfolioResponse = await fetch(`/getCurrentPortfolio?username=${username}`);
+        const portfolioResponse = await fetch(`/getCurrentPortfolio?username=${username}&portfolio_name=${portfolio_name}`);
         if (!portfolioResponse.ok) throw new Error('Failed to fetch portfolio');
         const portfolioData = await portfolioResponse.json();
         console.log('portfolioData', portfolioData)
@@ -51,6 +52,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function handleButtonClick(button) {
   const username = new URLSearchParams(window.location.search).get('username');
+  const portfolio_name = new URLSearchParams(window.location.search).get('portfolio_name');
+
     // Get the row containing the clicked button
     const row = button.parentElement.parentElement;
     const cells = row.getElementsByTagName('td');
@@ -66,7 +69,8 @@ function handleButtonClick(button) {
         stock_volume: cells[7].innerText,
         stock_vwap: cells[8].innerText,
         stock_timestamp: cells[9].innerText,
-        username: username
+        username: username,
+        portfolio_name: portfolio_name
     };
 
     fetch('/addStock', {

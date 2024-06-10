@@ -52,7 +52,6 @@ async function postUserProfile(req, res) {
 async function getHome(req, res) {
   const { username, portfolio_name } = req.query;
 
-  console.log(portfolio_name)
   try {
     const results = await db.query(`SELECT
                                     pld.stock_symbol,
