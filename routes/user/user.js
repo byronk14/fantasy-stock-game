@@ -50,7 +50,9 @@ async function postUserProfile(req, res) {
 }
 
 async function getHome(req, res) {
-  const { username } = req.query;
+  const { username, portfolio_name } = req.query;
+
+  console.log(portfolio_name)
   try {
     const results = await db.query(`SELECT
                                     pld.stock_symbol,
@@ -65,16 +67,18 @@ async function getHome(req, res) {
                                     FROM user_info ui 
                                     JOIN portfolio_info pi2 on ui.id = pi2.user_id 
                                     JOIN portfolio_lineup_details pld on pi2.portfolio_id = pld.portfolio_id  
-                                    WHERE ui.username = ?`, [username]);
+                                    WHERE ui.username = ?
+                                    AND pi2.portfolio_name = ?;`, [username, portfolio_name]);
 
-    const portfolio_name = await db.query(`SELECT 
+    const portfolioname = await db.query(`SELECT 
                                         portfolio_name
                                         FROM portfolio_info pi
                                         JOIN user_info ui on pi.user_id = ui.id 
-                                        WHERE ui.username = ?`, [username]);
+                                        WHERE ui.username = ?
+                                        AND pi.portfolio_name = ?`, [username, portfolio_name]);
 
     //console.log([results, portfolio_name]);
-    res.json([results, portfolio_name])
+    res.json([results, portfolioname])
     }
   
   catch (error) {

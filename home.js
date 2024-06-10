@@ -4,8 +4,9 @@ edit_portfolio_button.addEventListener('click', editPortfolio);
 
 document.addEventListener('DOMContentLoaded', async () => {
   const username = new URLSearchParams(window.location.search).get('username');
+  const portfolio_name = new URLSearchParams(window.location.search).get('portfolio_name');
 
-  fetch(`/getHome?username=${username}`, {
+  fetch(`/getHome?username=${username}&portfolio_name=${portfolio_name}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
