@@ -1,37 +1,49 @@
+/* home.css */
+
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f5f5f5; /* Light background color */
 }
+
 .header {
-    background-color: #5CE1E6;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #00bcd4; /* Updated background color */
     color: white;
-    padding: 10px 0;
-    text-align: center;
-    font-size: 24px;
-    position: relative;
+    padding: 10px 20px; /* Increased padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for the header */
+    position: fixed;
+    top: 0;
+    z-index: 1000; /* Ensure header stays on top */
 }
+
 .menu-icon {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    font-size: 24px;
     cursor: pointer;
+    font-size: 24px;
 }
+
 .chat-icon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
     font-size: 24px;
-    cursor: pointer;
 }
 
 .sidebar {
     width: 200px;
     height: 100vh;
-    background-color: #5CE1E6;
+    background-color: #00bcd4; /* Updated background color */
     position: fixed;
     left: -200px;
+    top: 50px; /* Adjust for fixed header */
     transition: left 0.3s;
     overflow-y: auto;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for the sidebar */
+    z-index: 1000; /* Ensure sidebar stays on top */
 }
 
 .sidebar nav ul {
@@ -42,6 +54,7 @@ body {
 
 .sidebar nav ul li {
     padding: 15px;
+    border-bottom: 1px solid #0097a7; /* Border for list items */
 }
 
 .sidebar nav ul li a {
@@ -51,7 +64,7 @@ body {
 }
 
 .sidebar nav ul li a:hover {
-    background-color: #5CE1E6;
+    background-color: #0097a7;
 }
 
 .sidebar.expanded {
@@ -59,54 +72,67 @@ body {
 }
 
 .container {
-    margin: 20px;
+    flex: 1;
+    margin-left: 0;
+    padding: 70px 20px 20px 20px; /* Adjust padding for fixed header */
+    transition: margin-left 0.3s;
+    overflow-y: auto; /* Allow scrolling */
 }
+
+.container.expanded {
+    margin-left: 200px;
+}
+
 .team-header {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
     margin-bottom: 20px;
 }
-.team-header img {
-    width: 50px;
-    vertical-align: middle;
+
+.buttons button {
+    background-color: #00bcd4; /* Updated button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
-.team-header span {
-    font-size: 20px;
-    margin-left: 10px;
-    vertical-align: middle;
+
+.buttons button:hover {
+    background-color: #0097a7; /* Darker shade on hover */
 }
+
 .lineup {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden; /* Ensure rounded corners apply */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
+
 .lineup th, .lineup td {
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     padding: 8px;
-    text-align: center;
+    text-align: left;
 }
+
 .lineup th {
-    background-color: #f2f2f2;
+    background-color: #f4f4f4;
 }
-.lineup td img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-.lineup td {
-    vertical-align: middle;
-}
-.buttons {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.buttons button {
-    background-color: #5CE1E6;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    margin: 0 10px;
-}
-.buttons button:hover {
-    background-color: #5CE1E6;
+
+.lineup tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
 }
