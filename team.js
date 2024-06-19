@@ -77,6 +77,16 @@ function createCard(cardData) {
     });
     card.appendChild(button);
 
+    const deleteIcon = document.createElement('span');
+    deleteIcon.textContent = '❌';  // Unicode for a cross mark
+    deleteIcon.classList.add('delete-icon');
+    deleteIcon.addEventListener('click', () => {
+        cardContainer.removeChild(card);
+        // Optionally: Add logic to handle server-side deletion here
+        // e.g., fetch(`/deleteLeague?leagueId=${data.leagueId}`, { method: 'DELETE' });
+    });
+    card.appendChild(deleteIcon);
+
     return card;
 }
 
