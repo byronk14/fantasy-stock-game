@@ -25,6 +25,7 @@ body {
     background-color: #ffffff;
     text-align: center;
     transition: transform 0.2s; /* Add a transition for a hover effect */
+    position:relative
   }
   
   .card img {

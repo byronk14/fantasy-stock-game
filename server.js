@@ -17,6 +17,7 @@ app.post('/login', user.login);
 app.get('/team', team.team);
 app.post('/createLeague', team.createLeague);
 app.get('/getLeague', team.getLeague);
+app.delete('/deleteLeague', team.deleteLeague);
 
 app.get('/home', user.home);
 app.get('/getHome', user.getHome);

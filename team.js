@@ -1,10 +1,10 @@
-document.addEventListener('DOMContentLoaded', async function() {  // Make the function async
+document.addEventListener('DOMContentLoaded', async function() {  
     const cardContainer = document.getElementById('card-container');
     const username = new URLSearchParams(window.location.search).get('username');
 
     try {
         const getLeagueResponse = await fetch(`/getLeague?username=${username}`, {
-            cache: "no-cache"  // This can help bypass caching for debugging
+            cache: "no-cache"
         });
 
         if (!getLeagueResponse.ok) {
@@ -14,19 +14,20 @@ document.addEventListener('DOMContentLoaded', async function() {  // Make the fu
         const userLeagues = await getLeagueResponse.json();
         console.log(userLeagues);
 
-        if (userLeagues[0].length === 0) {
+        // Ensure userLeagues exists before checking length
+        if (!userLeagues.length || (userLeagues.length === 1 && userLeagues[0].length === 0)) {
             const createLeagueCardData = {
                 title: 'No Leagues Found',
                 description: 'You are not in any league.',
                 buttonText: 'Create League'
             };
-            const createLeagueCard = createCard(createLeagueCardData);
+            const createLeagueCard = createCard(createLeagueCardData, cardContainer, username);
             cardContainer.appendChild(createLeagueCard);
         } else {
             userLeagues[0].forEach(league => {
                 league.buttonText = 'View League'; // Add a button text to each league card
                 league.url = `/home?username=${username}`;
-                const leagueCard = createCard(league);
+                const leagueCard = createCard(league, cardContainer, username);
                 cardContainer.appendChild(leagueCard);
             });
 
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async function() {  // Make the fu
                     description: 'You can create a new league.',
                     buttonText: 'Create League'
                 };
-                const createLeagueCard = createCard(createLeagueCardData);
+                const createLeagueCard = createCard(createLeagueCardData, cardContainer, username);
                 cardContainer.appendChild(createLeagueCard);
             }
         }
@@ -47,9 +48,22 @@ document.addEventListener('DOMContentLoaded', async function() {  // Make the fu
     }
 });
 
-function createCard(cardData) {
+function createCard(cardData, cardContainer, username) {
     const card = document.createElement('div');
-    card.className = 'card';
+    card.classList.add('card');
+
+    // Add the delete icon only if the card is not for creating a new league
+    if (cardData.description !== 'You can create a new league.' && cardData.description !== 'You are not in any league.') {
+        const deleteIcon = document.createElement('span');
+        deleteIcon.textContent = '❌';  // Unicode for a cross mark
+        deleteIcon.classList.add('delete-icon');
+        deleteIcon.addEventListener('click', () => {
+            cardContainer.removeChild(card);
+            // Optionally: Add logic to handle server-side deletion here
+            fetch(`/deleteLeague?portfolio_id=${cardData.portfolio_id}`, { method: 'DELETE' });
+        });
+        card.appendChild(deleteIcon);
+    }
 
     if (cardData.imgSrc) {
         const img = document.createElement('img');
@@ -69,23 +83,29 @@ function createCard(cardData) {
     const button = document.createElement('button');
     button.textContent = cardData.buttonText;
     button.addEventListener('click', function() {
-        if (cardData.url) {
+        if (cardData.description === 'You can create a new league.' || cardData.description === 'You are not in any league.') {
+            // Hide the "Create League" button
+            button.style.display = 'none';
+
+            // Create and show the input field and "Submit" button
+            const inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.placeholder = 'Enter league name';
+            card.appendChild(inputField);
+
+            const submitButton = document.createElement('button');
+            submitButton.textContent = 'Submit';
+            submitButton.addEventListener('click', function() {
+                // Handle the submit action (e.g., send data to the server)
+                const leagueName = inputField.value;
+                createLeague(leagueName, username);
+            });
+            card.appendChild(submitButton);
+        } else if (cardData.url) {
             getPortfolio(cardData);
-        } else {
-            showCreateLeagueForm(card);
         }
     });
     card.appendChild(button);
-
-    const deleteIcon = document.createElement('span');
-    deleteIcon.textContent = '❌';  // Unicode for a cross mark
-    deleteIcon.classList.add('delete-icon');
-    deleteIcon.addEventListener('click', () => {
-        cardContainer.removeChild(card);
-        // Optionally: Add logic to handle server-side deletion here
-        // e.g., fetch(`/deleteLeague?leagueId=${data.leagueId}`, { method: 'DELETE' });
-    });
-    card.appendChild(deleteIcon);
 
     return card;
 }
@@ -99,38 +119,9 @@ function getPortfolio(cardData) {
     }
 }
 
-function showCreateLeagueForm(card) {
-    // Remove existing form if present
-    const existingForm = card.querySelector('.create-league-form');
-    if (existingForm) {
-        card.removeChild(existingForm);
-    }
-
-    // Create input and submit button
-    const form = document.createElement('div');
-    form.className = 'create-league-form';
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Enter league name';
-    form.appendChild(input);
-
-    const submitButton = document.createElement('button');
-    submitButton.textContent = 'Submit';
-    submitButton.addEventListener('click', function() {
-        createLeague(input.value);
-    });
-    form.appendChild(submitButton);
-
-    card.appendChild(form);
-}
-
-async function createLeague(leagueName) {
+async function createLeague(leagueName, username) {
     if (leagueName.trim()) {
         console.log('Creating league:', leagueName);
-        const queryParams = new URLSearchParams(window.location.search);
-        const username = queryParams.get('username');
-        console.log('Username:', username);
 
         if (!username) {
             alert('Username is not provided in the URL.');
@@ -141,9 +132,9 @@ async function createLeague(leagueName) {
             // Fetch the current leagues again to ensure up-to-date information
             const getLeagueResponse = await fetch(`/getLeague?username=${username}`);
             const userLeagues = await getLeagueResponse.json();
-
+            console.log('userLeague', userLeagues)
             // Check if the user already has 3 leagues
-            if (userLeagues[0].length >= 3) {
+            if (userLeagues.length && userLeagues[0].length >= 3) {
                 alert('You have reached the maximum number of leagues.');
                 return;
             }

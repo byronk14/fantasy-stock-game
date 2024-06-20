@@ -52,10 +52,11 @@ async function getLeague(req, res){
     const { username } = req.query;
 
     query = `SELECT 
+                portfolio_id,
                 portfolio_name 
-                FROM portfolio_info pi
-                JOIN user_info ui ON pi.user_id = ui.id 
-                WHERE ui.username = ?;`
+              FROM portfolio_info pi
+              JOIN user_info ui ON pi.user_id = ui.id 
+              WHERE ui.username = ?;`
     
     try {
         const results = await db.query(query, [username]);
@@ -68,8 +69,29 @@ async function getLeague(req, res){
         }
 }
 
+async function deleteLeague(req, res){
+  const { portfolio_id } = req.query;
+
+  query_pld = `DELETE FROM portfolio_lineup_details pld
+                WHERE pld.portfolio_id = ?;`
+  
+  query_pi = `DELETE FROM portfolio_info pi
+                WHERE pi.portfolio_id = ?;`
+
+  try {
+    await db.query(query_pld, [portfolio_id]);
+    await db.query(query_pi, [portfolio_id]);
+    res.status(200).json({});
+    } 
+  catch (error) {
+      console.error('Error executing query', error.stack);
+      res.status(500).json({ success: false, message: 'Database error' });
+      }
+}
+
 module.exports = {
     team: team,
     createLeague: createLeague,
-    getLeague: getLeague
+    getLeague: getLeague,
+    deleteLeague: deleteLeague
   }
