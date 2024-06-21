@@ -66,3 +66,20 @@ function toggleSidebar() {
   sidebar.classList.toggle('expanded');
   container.classList.toggle('expanded');
 }
+
+const get_league_members_button = document.getElementById('get-league-members');
+
+get_league_members_button.addEventListener('click', editLeagueMembers);
+
+function editLeagueMembers() {
+  const username = new URLSearchParams(window.location.search).get('username');
+  const portfolio_name = new URLSearchParams(window.location.search).get('portfolio_name');
+
+  if (username) {
+    //window.location.href = `/stockPool?username=${username}&portfolio_name=${portfolio_name}`;
+    window.location.href = `/leagueMembers`;
+  }
+  else {
+    console.error('Username not found in URL parameters');
+  }
+}

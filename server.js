@@ -2,6 +2,7 @@ const express = require('express');
 const user = require('./routes/user/user');
 const editPortfolio = require('./routes/portfolio/editPortfolio');
 const team = require('./routes/team/team');
+const leagueMembers = require('./routes/leagueMembers/leagueMembersAPI');
 const path = require('path');
 
 const app = express();
@@ -27,6 +28,8 @@ app.get('/getStockPool', editPortfolio.getStockPool);
 app.post('/addStock', editPortfolio.addStock);
 app.get('/getCurrentPortfolio', editPortfolio.getCurrentPortfolio)
 
+app.get('/leagueMembers', leagueMembers.leagueMembers)
+
 // Static file serving
 app.get('/client.js', (req, res) => {
   res.type('application/javascript');
@@ -46,6 +49,11 @@ app.get('/stockPool.js', (req, res) => {
 app.get('/team.js', (req, res) => {
   res.type('application/javascript');
   res.sendFile(path.join(__dirname, 'team.js'));
+});
+
+app.get('/leagueMembers.js', (req, res) => {
+  res.type('application/javascript');
+  res.sendFile(path.join(__dirname, 'leagueMembers.js'));
 });
 
 // Start the server
