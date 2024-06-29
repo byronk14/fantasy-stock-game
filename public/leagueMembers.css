@@ -1,0 +1,57 @@
+.styled-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.styled-button:hover {
+    background-color: #45a049;
+}
+
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    background-color: #00bcd4; /* Updated background color */
+    position: fixed;
+    left: -200px;
+    top: 50px; /* Adjust for fixed header */
+    transition: left 0.3s;
+    overflow-y: auto;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for the sidebar */
+    z-index: 1000; /* Ensure sidebar stays on top */
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    padding: 15px;
+    border-bottom: 1px solid #0097a7; /* Border for list items */
+}
+
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #0097a7;
+}
+
+.sidebar.expanded {
+    left: 0;
+}
